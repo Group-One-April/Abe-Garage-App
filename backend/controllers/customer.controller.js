@@ -38,3 +38,5 @@ async function createCustomer(req, res, next) {
 module.exports = {
     createCustomer
 };
+
+//Test
