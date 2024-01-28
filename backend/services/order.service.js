@@ -52,6 +52,6 @@ const createOrder = async (orderData) => {
       return { status: 500, message: "Internal Server Error" };
     }
   } catch (err) {
-    console.log(err);
+    console.log("creating order failed");
   }
 };
