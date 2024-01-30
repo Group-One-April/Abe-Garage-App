@@ -51,7 +51,12 @@ const createOrder = async (orderData) => {
       console.error("Failed to add order to order_info table");
       return { status: 500, message: "Internal Server Error" };
     }
+
+    // Insert additional order information into the order services table
+    console.log(rows2);
+    
   } catch (err) {
     console.log("creating order failed");
   }
+
 };
