@@ -29,6 +29,7 @@ import Footer from './markup/components/Footer/Footer';
 
 // Import the PrivateAuthRoute component 
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
+import About from './markup/pages/About';
 
 
 function App() {
@@ -37,30 +38,37 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         {/* // Add the Orders Route  */}
-        <Route path="/admin/orders"
+        <Route
+          path="/admin/orders"
           element={
             <PrivateAuthRoute roles={[1, 2, 3]}>
               <Orders />
             </PrivateAuthRoute>
-          } />
+          }
+        />
         {/* // Add the Customers Route  */}
-        <Route path="/admin/customers"
+        <Route
+          path="/admin/customers"
           element={
             <PrivateAuthRoute roles={[2, 3]}>
               <Customers />
             </PrivateAuthRoute>
-          } />
+          }
+        />
         {/* // Add the Employees Route  */}
         <Route path="/admin/employees" element={<Employees />} />
-        <Route path="/admin/add-employee"
+        <Route
+          path="/admin/add-employee"
           element={
             <PrivateAuthRoute roles={[3]}>
               <AddEmployee />
             </PrivateAuthRoute>
-          } />
+          }
+        />
         {/* 
           Customers (/admin/customers) - managers and admins
           Orders (/admin/orders) - Can be accessed by all employees
