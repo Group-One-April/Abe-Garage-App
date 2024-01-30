@@ -32,6 +32,10 @@ import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import About from './markup/pages/About';
 import Contact from './markup/pages/Contact';
 import Services from './markup/pages/Services';
+import DashBoard from './markup/pages/admin/DashBoard';
+
+
+
 
 
 function App() {
@@ -44,6 +48,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<DashBoard />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         {/* // Add the Orders Route  */}
         <Route
