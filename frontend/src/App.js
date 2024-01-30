@@ -31,6 +31,7 @@ import Footer from './markup/components/Footer/Footer';
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import About from './markup/pages/About';
 import Contact from './markup/pages/Contact';
+import Services from './markup/pages/Services';
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
