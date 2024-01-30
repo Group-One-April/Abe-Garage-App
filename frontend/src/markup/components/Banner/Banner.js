@@ -1,19 +1,20 @@
-import React from "react";
+import React from 'react'
 
-function BottomBanner() {
+
+function Banner() {
   return (
-    <section className="video-section bg2">
+    <section className="video-section bg">
       {/* <div
         data-parallax={{ y: 50 }}
-        classNameName="sec-bg"
+        className="sec-bg"
         style={{
-          backgroundImage: "assets/images/additionalService.png",
+          backgroundImage: "url(assets/images/banner/banner.png)",
         }}
       ></div> */}
       <div className="auto-container">
-        <h5>Working since 1992</h5>
+        <h5>Working since 1999</h5>
         <h2>
-          We are leader <br /> in Car Mechanical Work
+          Tuneup Your Car <br /> to Next Level
         </h2>
         <div className="video-box">
           <div className="video-btn">
@@ -33,4 +34,4 @@ function BottomBanner() {
   );
 }
 
-export default BottomBanner;
+export default Banner
