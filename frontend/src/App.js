@@ -6,6 +6,8 @@ import { Routes, Route } from "react-router";
 import Home from "./markup/pages/Home";
 import Login from "./markup/pages/Login";
 import AddEmployee from './markup/pages/admin/AddEmployee';
+import AddCustomer from "./markup/pages/admin/AddCustomer";
+import AddVehicle from "./markup/pages/admin/AddVehicle";
 import Unauthorized from './markup/pages/Unauthorized';
 // Import the Orders and Customers components 
 import Orders from './markup/pages/admin/Orders';
@@ -59,6 +61,7 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        <Route path="/admin/add-customer" element={<AddCustomer />} />
         {/* // Add the Employees Route  */}
         <Route path="/admin/employees" element={<Employees />} />
         <Route
@@ -69,6 +72,8 @@ function App() {
             </PrivateAuthRoute>
           }
         />
+        {/* // Add the Vehicles Route  */}
+        <Route path="/admin/customer/{customerId}" element={<AddVehicle />} />
         {/* 
           Customers (/admin/customers) - managers and admins
           Orders (/admin/orders) - Can be accessed by all employees
