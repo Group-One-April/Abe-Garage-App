@@ -16,3 +16,24 @@
 // router.put("/api/vehicle/:id", [authMiddleware.verifyToken, authMiddleware.isAdmin], vehicleController.updateVehicleById);
 // //export the router
 // module.exports = router;
+
+const express = require("express");
+const router = express.Router();
+const vehicleController = require("../controllers/vehicle.controller");
+
+// Create a vehicle
+router.post("/", vehicleController.createVehicle);
+
+// Get all vehicles
+router.get("/", vehicleController.getAllVehicles);
+
+// Get a vehicle by ID
+router.get("/:id", vehicleController.getVehicleById);
+
+// Update a vehicle by ID
+router.put("/:id", vehicleController.updateVehicleById);
+
+// Get a vehicle by customer ID
+// router.get("/customer/:id", vehicleController.getVehicleByCustomerId);
+
+module.exports = router;
