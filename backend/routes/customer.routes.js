@@ -9,7 +9,9 @@ router.post("/api/customer", customerController.createCustomer);
 //create a route to handle the get all customers
 router.get("/api/customers", customerController.getAllCustomers);
 //crete a route to get a single customer
-router.get("/api/customer/:id", customerController.getSingleCustomer);
+router.get("/api/customer/:id", customerController.getCustomerById);
+//create a route to handle the update customer request on put
+router.put("/api/customer",customerController.updateCustomer);
 
 //export the router
 module.exports = router;
