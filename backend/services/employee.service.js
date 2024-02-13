@@ -59,10 +59,76 @@ async function getAllEmployees() {
   const rows = await conn.query(query);
   return rows;
 }
+
+// //A Function to get a single employee
+  async function getSingleEmployee(id) {
+    try {
+      console.log("Fetching employee with ID:", id);
+      const query = "SELECT * FROM employee WHERE employee_id = ?";
+      const rows = await conn.query(query, [id]);
+      console.log("Fetched employee:", rows);
+      if (rows.length === 0) {
+        return null; // Return null if no employee is found
+      }
+      return rows[0]; // Return the first employee found
+    } catch (error) {
+      console.error("Error fetching single employee:", error);
+      throw error; // Throw the error to be caught and handled by the caller
+    }
+  }
+  
+
+// A function to update employee
+async function updateEmployee(newData) {
+  try {
+    const query = `
+      UPDATE employee_info
+      SET 
+        employee_first_name = ?,
+        employee_last_name = ?,
+        employee_phone = ?
+      WHERE employee_id = ?
+    `;
+
+    const { employee_id, employee_first_name, employee_last_name, employee_phone } = newData;
+
+    if (!employee_id || !employee_first_name || !employee_last_name || !employee_phone ) {
+      throw new Error("Missing required properties in newData");
+    }
+
+    await conn.query(query, [employee_first_name, employee_last_name, employee_phone,  employee_id]);
+  } catch (error) {
+    console.error("Error updating employee:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+//A Function to delete an employee
+async function deleteEmployee(employee_id) {
+  const query = `
+    DELETE employee, employee_info, employee_role
+    FROM employee
+    LEFT JOIN employee_info ON employee.employee_id = employee_info.employee_id
+    LEFT JOIN employee_role ON employee.employee_id = employee_role.employee_id
+    WHERE employee.employee_id = ?
+  `;
+  await conn.query(query, [employee_id]);
+}
+
+
 // Export the functions for use in the controller
 module.exports = {
   checkIfEmployeeExists,
   createEmployee,
   getEmployeeByEmail,
-  getAllEmployees
+  getAllEmployees,
+  getSingleEmployee,
+  updateEmployee,
+  deleteEmployee
+
+
 };
