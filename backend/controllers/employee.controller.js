@@ -84,45 +84,6 @@ async function getSingleEmployee(req, res, next) {
 }
 
 //create updateEmploee controller
-// async function updateEmployee(req, res, next) {
-//   try {
-//     const newData = req.body;
-
-//     console.log('Received newData:', newData); // Add this logging statement
-
-//     if (!newData) {
-//       throw new Error("newData is undefined");
-//     }
-
-//     // Check if all required properties are present
-//     const requiredProperties = ['employee_id', 'employee_first_name', 'employee_last_name', 'employee_phone', 'company_role_id'];
-//     const missingProperties = requiredProperties.filter(prop => !(prop in newData));
-
-//     if (missingProperties.length > 0) {
-//       return res.status(400).json({
-//         success: false,
-//         message: 'Missing required properties in newData',
-//         missingProperties: missingProperties
-//       });
-//     }
-
-//     let updatedEmployee = await employeeService.updateEmployee(newData);
-  
-//     res.status(200).json({
-//       success: true,
-//       message: 'Updated successfully',
-//       data: updatedEmployee
-//     });
-//   } catch (error) {
-//     console.error('Error updating employee:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'An error occurred while updating the employee',
-//       error: error.message
-//     });
-//   }
-// }
-
 async function updateEmployee(req, res, next) {
   const newData = req.body;
 
@@ -143,23 +104,6 @@ async function updateEmployee(req, res, next) {
     });
   }
 }
-
-
-
-// //create deleteemployee controller
-// async function deleteEmployee(req,res,next){
-// let deleted = await employeeService.deleteEmployee(req.params.id);
-// if (!deleted) {
-// return res.status(400).json({
-//   error: 'Employee not found'
-//   });
-// } else {
-//   return res.status(200).json({
-//     success: true,
-//     data: deleted
-//     });
-//     }
-//     };
 
 // DELETE /employees/:employee_id
 const deleteEmployee = async (req, res) => {

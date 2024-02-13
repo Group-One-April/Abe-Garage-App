@@ -102,11 +102,6 @@ async function updateEmployee(newData) {
     throw error;
   }
 }
-
-
-
-
-
 //A Function to delete an employee
 async function deleteEmployee(employee_id) {
   const query = `

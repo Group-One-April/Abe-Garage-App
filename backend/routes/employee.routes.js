@@ -7,20 +7,20 @@ const employeeController = require('../controllers/employee.controller');
 // Import middleware 
 const authMiddleware = require("../middlewares/auth.middleware");
 // Create a route to handle the add employee request on post
-router.post("/api/employee", employeeController.createEmployee);
+router.post("/api/employee", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.createEmployee);
 // [authMiddleware.verifyToken, authMiddleware.isAdmin],
 // Create a route to handle the get all employees request on get
-router.get("/api/employees", employeeController.getAllEmployees);
+router.get("/api/employees", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getAllEmployees);
 
 // Create a route to handle the get single  employee request on get
-router.get('/api/employee/:id',   employeeController.getSingleEmployee);
+router.get('/api/employee/:id', [authMiddleware.verifyToken, authMiddleware.isAdmin],   employeeController.getSingleEmployee);
 
 // Create a route to handle the update  employee
-router.put( '/api/employee',   employeeController.updateEmployee);
+router.put( '/api/employee',  [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.updateEmployee);
 
 
 // Create a route to handle the delete  employee request on get
-router.delete("/api/employee", employeeController.deleteEmployee)
+router.delete("/api/employee", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.deleteEmployee)
 
 // Export the router
 module.exports = router;
