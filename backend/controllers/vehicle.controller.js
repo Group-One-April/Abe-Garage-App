@@ -1,170 +1,107 @@
-// // Import the vehicle service
-// const vehicleService = require('../services/vehicle.service');
-// // Create the add vehicle controller
-// async function createVehicle(req, res, next) {
-//   try {
-//     const vehicleData = req.body;
-//     // Create the vehicle
-//     const vehicle = await vehicleService.createVehicle(vehicleData);
-//     if (!vehicle) {
-//       res.status(400).json({
-//         error: "Failed to add the vehicle!"
-//       });
-//     } else {
-//       res.status(200).json({
-//         status: "true",
-//       });
-//     }
-//   } catch (error) {
-//     console.log(err);
-//     res.status(400).json({
-//       error: "Something went wrong!"
-//     });
-//   }
-// }
-// // Create the getAllVehicles controller
-// async function getAllVehicles(req, res, next) {
-//   // Call the getAllVehicles method from the vehicle service
-//   const vehicles = await vehicleService.getAllVehicles();
-//   // console.log(vehicles);
-//   if (!vehicles) {
-//     res.status(400).json({
-//       error: "Failed to get all vehicles!"
-//     });
-//   } else {
-//     res.status(200).json({
-//       status: "success",
-//       data: vehicles,
-//     });
-//   }
-// }
-// // Create the getVehicleById controller
-// async function getVehicleById(req, res, next) {
-//   // Call the getVehicleById method from the vehicle service
-//   const vehicle = await vehicleService.getVehicleById(req.params.id);
-//   // console.log(vehicle);
-//   if (!vehicle) {
-//     res.status(400).json({
-//       error: "Failed to get vehicle by id!"
-//     });
-//   } else {
-//     res.status(200).json({
-//       status: "success",
-//       data: vehicle,
-//     });
-//   }
-// }
-// // Create the updateVehicleById controller
-// async function updateVehicleById(req, res, next) {
-//   try {
-//     const vehicleData = req.body;
-//     // Update the vehicle
-//     const vehicle = await vehicleService.updateVehicleById(req.params.id, vehicleData);
-//     if (!vehicle) {
-//       res.status(400).json({
-//         error: "Failed to update the vehicle!"
-//       });
-//     } else {
-//       res.status(200).json({
-//         status: "true",
-//       });
-//     }
-//   } catch (error) {
-//     console.log(err);
-//     res.status(400).json({
-//       error: "Something went wrong!"
-//     });
-//   }
-// }
-// // Create the getVehicleByCustomerId controller
-// async function getVehicleByCustomerId(req, res, next) {
-//   // Call the getVehicleByCustomerId method from the vehicle service
-//   const vehicle = await vehicleService.getVehicleByCustomerId(req.params.id);
-//   // console.log(vehicle);
-//   if (!vehicle) {
-//     res.status(400).json({
-//       error: "Failed to get vehicle by customer id!"
-//     });
-//   } else {
-//     res.status(200).json({
-//       status: "success",
-//       data: vehicle,
-//     });
-//   }
-// }
-// // Export the createVehicle controller
-// module.exports = {
-//   createVehicle,
-//   getAllVehicles,
-//   getVehicleById,
-//   updateVehicleById,
-//   getVehicleByCustomerId
-// };
-
-
+//import the vehicle service
 const vehicleService = require("../services/vehicle.service");
-
-// Controller function to handle creating a vehicle
-async function createVehicle(req, res) {
-  try {
-    const newVehicleId = await vehicleService.createVehicle(req.body);
-    res
-      .status(201)
-      .json({ id: newVehicleId, message: "Vehicle created successfully" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+//create the add vehicle controller
+async function createVehicle(req, res, next) {
+  //check if vehicle serial already exists in the database
+  const vehicleExists = await vehicleService.checkIfVehicleExists(
+    req.body.vehicle_serial
+  );
+  //if vehicle exists, send a response to the client
+  if (vehicleExists) {
+    res.status(400).json({
+      error: "This vehicle serial is already associated with another vehicle!",
+    });
+  } else {
+    try {
+      const vehicleData = req.body;
+      //create the vehicle
+      const vehicle = await vehicleService.createVehicle(vehicleData);
+      if (!vehicle) {
+        res.status(400).json({
+          error: "Failed to add the vehicle!",
+        });
+      } else {
+        res.status(200).json({
+          status: "trueeeeeeeee",
+        });
+      }
+    } catch (error) {
+      console.log(err);
+      res.status(400).json({
+        error: "Something went wrong!",
+      });
+    }
   }
 }
-
-// Controller function to handle getting all vehicles
-async function getAllVehicles(req, res) {
+//write a function to get single vehicle using vehicle id
+async function getVehicleById(req, res, next) {
   try {
-    const vehicles = await vehicleService.getAllVehicles();
-    res.status(200).json(vehicles);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-}
-
-// Controller function to handle getting a vehicle by ID
-async function getVehicleById(req, res) {
-  const vehicleId = req.params.id;
-
-  try {
+    const vehicleId = req.params.vehicle_id;
+    // Assuming vehicleService.getVehicleById returns a Promise resolving to a vehicle object
     const vehicle = await vehicleService.getVehicleById(vehicleId);
     if (!vehicle) {
-      res.status(404).json({ error: "Vehicle not found" });
-    } else {
-      res.status(200).json(vehicle);
+      return res.status(404).json({
+        error: "Vehicle not found",
+      });
     }
+    res.status(200).json({
+      vehicle: vehicle,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(err);
+    res.status(400).json({
+      error: "Something went wrong!",
+    });
   }
 }
 
-// Controller function to handle updating a vehicle by ID
-async function updateVehicleById(req, res) {
-  const vehicleId = req.params.id;
-
+//write a function to get vehicle by customer id
+async function getVehicleByCustomerId(req, res, next) {
   try {
-    const updated = await vehicleService.updateVehicleById(vehicleId, req.body);
-    if (!updated) {
-      res.status(404).json({ error: "Vehicle not found" });
-    } else {
-      res.status(200).json({ message: "Vehicle updated successfully" });
+    const customerId = req.params.customer_id;
+    // Assuming vehicleService.getVehicleByCustomerId returns a Promise resolving to a vehicle object
+    const vehicle = await vehicleService.getVehicleByCustomerId(customerId);
+    if (!vehicle) {
+      return res.status(404).json({
+        error: "Vehicle not found",
+      });
     }
+    res.status(200).json({
+      vehicle: vehicle,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(err);
+    res.status(400).json({
+      error: "Something went wrong!",
+    });
   }
 }
-
+//write a function to update a vehicle
+async function updateVehicle(req, res, next) {
+  try {
+    const vehicleData = req.body;
+    //update the vehicle
+    const vehicle = await vehicleService.updateVehicle(vehicleData);
+    if (!vehicle) {
+      res.status(400).json({
+        error: "Failed to update the vehicle!",
+      });
+    } else {
+      res.status(200).json({
+        status: "true",
+      });
+    }
+  } catch (error) {
+    console.log(err);
+    res.status(400).json({
+      error: "Something went wrong!",
+    });
+  }
+}
+//export the controller functions
 module.exports = {
   createVehicle,
-  getAllVehicles,
   getVehicleById,
-  updateVehicleById,
+  getVehicleByCustomerId,
+  updateVehicle,
 };
