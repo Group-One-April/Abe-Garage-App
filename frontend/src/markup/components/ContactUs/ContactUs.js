@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { TfiEmail } from "react-icons/tfi";
-import { SlPhone } from "react-icons/sl";
-import { CiLocationOn } from "react-icons/ci";
+// import { TfiEmail } from "react-icons/tfi";
+// import { SlPhone } from "react-icons/sl";
+// import { CiLocationOn } from "react-icons/ci";
 
 function ContactUs() {
   return (
@@ -30,7 +30,7 @@ function ContactUs() {
         <div className="Contact_us_contacts_links">
           <div className="link_location">
             <Link to="#">
-              <CiLocationOn className="icon_right" />
+              {/* <CiLocationOn className="icon_right" /> */}
             </Link>
             <div>
               <p className="link_location_name">Address: </p>
@@ -39,7 +39,7 @@ function ContactUs() {
           </div>
           <div className="link_email">
             <Link to="#">
-              <TfiEmail className="icon_right" />
+              {/* <TfiEmail className="icon_right" /> */}
             </Link>
             <div>
               <p className="link_email_name">Email: </p>
@@ -48,7 +48,7 @@ function ContactUs() {
           </div>
           <div className="link_phone">
             <Link to="#">
-              <SlPhone className="icon_right" />
+              {/* <SlPhone className="icon_right" /> */}
             </Link>
             <div>
               <p className="link_phone_name">Phone: </p>
