@@ -78,10 +78,81 @@ async function getAllCustomers() {
     console.log(error);
   }
 }
+//---------------- Create the function to get customer by id-----------------//
+async function getCustomerById(id) {
+  const query =
+    "SELECT * FROM customer_info INNER JOIN customer_identifier ON customer_info.customer_id = customer_identifier.customer_id WHERE customer_info.customer_id = ?";
+  const rows = await conn.query(query, [id]);
+
+  if (rows.length === 0) {
+    // No customer found with the given ID
+    return null;
+  }
+
+  // Assuming that the query returns a single customer, you can return the first row
+  const customer = rows[0];
+
+  // Optionally, you may want to format the result or exclude unnecessary fields
+  const formattedCustomer = {
+    customer_id: customer.customer_id,
+    customer_first_name: customer.customer_first_name,
+    customer_last_name: customer.customer_last_name,
+    customer_email: customer.customer_email,
+    customer_phone_number: customer.customer_phone_number,
+    active_customer_status: customer.active_customer_status,
+    customer_hash: customer.customer_hash,
+    customer_added_date: customer.customer_added_date,
+  };
+
+  return formattedCustomer;
+}
+
+//---------- Create the function to update the customer-----------------//
+async function updateCustomer(customer) {
+    const query1 =
+      "UPDATE customer_info SET customer_first_name = ?, customer_last_name = ?, active_customer_status = ? WHERE customer_id = ?";
+    const query2 =
+      "UPDATE customer_identifier SET customer_phone_number = ? WHERE customer_id = ?";
+  
+    try {
+      const result1 = await conn.query(query1, [
+        customer.customer_first_name,
+        customer.customer_last_name,
+        customer.active_customer_status,
+        customer.customer_id,
+      ]);
+  
+      // Check the result of the first update
+      if (result1.affectedRows !== 1) {
+        return { success: false, message: "Customer not found or not updated" };
+      }
+  
+      // Add your logic for the second update (query2)
+      const result2 = await conn.query(query2, [
+        customer.customer_phone_number,
+        customer.customer_id,
+      ]);
+  
+      // Check the result of the second update
+      if (result2.affectedRows !== 1) {
+        return {
+          success: false,
+          message: "Customer not found or not updated in customer_identifier",
+        };
+      }
+  
+      return { success: true, updatedCustomer: customer };
+    } catch (error) {
+      console.error(error);
+      return { success: false, message: "Error updating customer" };
+    }
+  }
 
 // export the functions
 module.exports = {
   checkIfCustomerExists,
   createCustomer,
   getAllCustomers,
+  getCustomerById,
+    updateCustomer,
 };

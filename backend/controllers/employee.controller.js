@@ -51,9 +51,78 @@ async function getAllEmployees(req, res, next) {
     });
   }
 }
+//create the getsingleemployee controller
+
+async function getSingleEmployee(req, res, next) {
+  try {
+    let id = parseInt(req.params.id);
+    
+    // Check if id is a valid number
+    if (isNaN(id) || id <= 0) {
+      return res.status(400).json({
+        error: "Invalid employee ID"
+      });
+    }
+    
+    let employee = await employeeService.getSingleEmployee(id);
+    if (!employee) {
+      return res.status(400).json({
+        error: "No user with that ID"
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        data: employee
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching single employee:", error);
+    res.status(500).json({
+      error: "An error occurred while fetching the employee"
+    });
+  }
+}
+
+//create updateEmploee controller
+async function updateEmployee(req, res, next) {
+  const newData = req.body;
+
+  try {
+    let updatedEmployee = await employeeService.updateEmployee(newData);
+  
+    res.status(200).json({
+      success: true,
+      message: 'Updated successfully',
+      data: updatedEmployee
+    });
+  } catch (error) {
+    console.error('Error updating employee:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while updating the employee',
+      error: error.message
+    });
+  }
+}
+
+// DELETE /employees/:employee_id
+const deleteEmployee = async (req, res) => {
+  const employeeId = req.params.employee_id; // Assuming employee_id is passed as a URL parameter
+  try {
+    const result = await db.deleteEmployee(employeeId);
+    res.status(200).json({ message: 'Employee deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting employee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
 
 // Export the createEmployee controller 
 module.exports = {
   createEmployee,
-  getAllEmployees
+  getAllEmployees,
+  getSingleEmployee,
+  updateEmployee,
+  deleteEmployee
+
 };

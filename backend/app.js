@@ -31,5 +31,8 @@ app.listen(port, () => {
 });
 
 
+// const vehicleRoutes = require("./routes/vehicle.routes");
+// app.use("/vehicles", vehicleRoutes);
+
 // Export the webserver for use in the application 
 module.exports = app;

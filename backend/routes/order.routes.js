@@ -17,7 +17,7 @@ router.get("/api/order/:id", orderController.getOrderById);
 router.put("/api/order", orderController.updateOrder);
 
 //route to get order using customer ID - get request
-router.get("/api/customer/orders/:id", orderController.getOrderByCustomerId);
+router.get("/api/customer/orders/:id", orderController.getOrdersByCustomerId);
 
 //route to get order by hashed data - get request
 router.get("/order-status/:hash", orderController.getOrderByHash);

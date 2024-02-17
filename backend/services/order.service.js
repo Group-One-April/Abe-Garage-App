@@ -37,7 +37,7 @@ const createOrder = async (orderData) => {
       return { status: 500, message: "Internal Server Error" };
     }
 
-    // the second query is to insert the order into the order_info table
+    // second query to insert the order into the order_info table
     const orderQuery2 =
       "INSERT INTO order_info (order_id, order_total_price, estimated_completion_date, completion_date, additional_request, notes_for_customer) VALUES (?, ?, ?, ?, ?, ?)";
     const rows2 = await conn.query(orderQuery2, [
@@ -84,20 +84,19 @@ const createOrder = async (orderData) => {
       orderData.order_completed || 0,
     ]);
 
-    // Check if the 'order_status' insertion was successful
+    // Checking if the 'order_status' insertion was successful
     if (rows4.affectedRows !== 1) {
       console.error("Failed to insert order_status into the database.");
-      // Consider rolling back the first query if necessary
+      
       return { status: 500, message: "Internal Server Error" };
     }
-    //----------------- Create an object with the details of the created order-------------//
+    // an object with the details of the created order
     const createdOrder = {
       id: rows1.insertId,
       customer_id: orderData.customer_id,
       vehicle_id: orderData.vehicle_id,
       employee_id: orderData.employee_id,
       order_hash: hash,
-      //   active_order: orderData.order_completed || 0,
       order_total_price: orderData.order_total_price || null,
       estimated_completion_date: orderData.estimated_completion_date || null,
       completion_date: orderData.completion_date || null,
@@ -105,8 +104,8 @@ const createOrder = async (orderData) => {
       order_services: orderData.order_services,
     };
 
-    // console.log("Order created successfully:", createdOrder);
-    // Return the created order
+    console.log("Order created successfully:", createdOrder);
+
     return {
       status: 200,
       message: "Order created successfully",
@@ -134,13 +133,13 @@ const getAllOrders = async () => {
 
     // console.log("All Orders:", orders)
 
-    // Check if any orders were found
+    // Checking if any orders were found
     if (orders.length === 0) {
       console.error("No orders found.");
       return { status: 404, message: "No orders found", orders: [] };
     }
 
-    // Get additional information about order services
+    // Getting additional information about order services
     const ordersWithServices = await Promise.all(
       orders.map(async (order) => {
         const query2 =
@@ -163,7 +162,7 @@ const getAllOrders = async () => {
 // a function to get a single order by ID
 const getOrderById = async (id) => {
   try {
-    // Query the database for the order with the given ID
+    // Querying the database for the order with the given ID
     const query =
       "SELECT * FROM orders " +
       "INNER JOIN order_info ON orders.order_id = order_info.order_id " +
@@ -173,18 +172,18 @@ const getOrderById = async (id) => {
 
     console.log("Order:", orders);
 
-    // Check if the order was found
+    // Checking if the order was found
     if (orders.length === 0) {
       console.error("Order not found.");
       return { status: 404, message: "Order not found", order: {} };
     }
 
-    // Get additional information about order services
+    // Getting additional information about order services
     const query2 =
       "SELECT service_id, service_completed FROM order_services WHERE order_id = ?";
     const orderServices = await conn.query(query2, [id]);
 
-    // Create an object with the details of the order
+    // Creating an object with the details of the order
     const order = {
       ...orders[0],
       order_services: orderServices,
@@ -203,7 +202,7 @@ const getOrderById = async (id) => {
 // a function to get order by customer ID
 const getOrdersByCustomerId = async (id) => {
   try {
-    // Query the database for all orders with order_info
+    // Querying the database for all orders with order_info
     const query = `
         SELECT *
         FROM orders
@@ -212,12 +211,12 @@ const getOrdersByCustomerId = async (id) => {
        INNER JOIN customer_vehicle_info ON orders.vehicle_id = customer_vehicle_info.vehicle_id INNER JOIN order_status ON orders.order_id = order_status.order_id WHERE orders.customer_id = ?`;
 
     const orders = await conn.query(query, [id]);
-    // Check if any orders were found
+    // Checking if any orders were found
     if (orders.length === 0) {
       console.error("No orders found.");
       return { status: 404, message: "No orders found", orders: [] };
     }
-    //return the orders
+    
     return { status: 200, message: "Orders found", orders: orders };
   } catch (err) {
     console.error("Error getting orders:", err);
@@ -241,7 +240,7 @@ const updateOrder = async (orderData) =>{
 
       console.log("two");
       console.log("two");
-    // Update additional order information in the 'order_info' table
+    // Updating additional order information in the 'order_info' table
     const query2 =
       "UPDATE order_info SET estimated_completion_date = ?, completion_date = ?, additional_request = ?, order_total_price = ?, notes_for_customer = ? WHERE order_id = ?";
     const rows2 = await conn.query(query2, [
@@ -253,14 +252,14 @@ const updateOrder = async (orderData) =>{
       orderData.order_id,
     ]);
 
-    //order info update successful
+    // checking if order info update is successful
      if (rows2.affectedRows !== 1) {
       console.error("Failed to update order_info.");
       // Consider rolling back the first query if necessary
       return { status: 500, message: "Internal Server Error" };
     }
 
-    // Check if 'order_services' array is present
+    // Checking if 'order_services' array is present
     if (!orderData.order_services || !Array.isArray(orderData.order_services)) {
       console.error("order_services array is missing or not an array.");
       return { status: 400, message: "Bad Request" };
@@ -280,8 +279,7 @@ const updateOrder = async (orderData) =>{
       ]);
     }
 
-    // ------
-    // insert into order_status table
+    // inserting into order_status table
     console.log(orderData.order_completed, orderData.order_id);
     const query4 =
       "UPDATE order_status SET order_status = ? WHERE order_id = ?";
@@ -307,10 +305,10 @@ const updateOrder = async (orderData) =>{
 
 // a function to get order by hashed data
 const getOrderByHash = async (hash) => {
-  // Query the database for the order with the given hash
+  // Querying the database for the order with the given hash
   try {
     const query = "SELECT * FROM orders WHERE order_hash = ?";
-    // Get the order_id by the hash
+    // Getting the order_id by the hash
     const order = await conn.query(query, [hash]);
     if (order.length === 0) {
       console.error("Order not found.");
@@ -319,7 +317,6 @@ const getOrderByHash = async (hash) => {
     // Return the order_id
     return { status: 200, message: "Order found", order: order[0] };
   } catch (error) {
-    //return error message
     return { status: 500, message: "Internal Server Error" };
   }
 };
