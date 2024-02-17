@@ -34,6 +34,6 @@ router.get("/:id", vehicleController.getVehicleById);
 router.put("/:id", vehicleController.updateVehicleById);
 
 // Get a vehicle by customer ID
-// router.get("/customer/:id", vehicleController.getVehicleByCustomerId);
+router.get("/customer/:id", vehicleController.getVehicleByCustomerId);
 
 module.exports = router;
