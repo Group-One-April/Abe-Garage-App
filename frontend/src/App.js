@@ -43,6 +43,7 @@ import CreateOrderStepThree from "./markup/pages/admin/Order/CreateNewOrderThree
 import AllOrdersPage from "./markup/pages/admin/Order/AllOrdersPage";
 import OrderDetailPage from "./markup/pages/admin/Order/OrderDetailPage";
 import OrderUpdatePage from "./markup/pages/admin/Order/OrderUpdatePage";
+import ServicesManage from "./markup/pages/admin/ServicesManage";
 
 function App() {
   return (
@@ -100,6 +101,14 @@ function App() {
           element={
             <PrivateAuthRoute roles={[1, 2, 3]}>
               <Orders />
+            </PrivateAuthRoute>
+          }
+        />
+        <Route
+          path="/admin/services"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <ServicesManage />
             </PrivateAuthRoute>
           }
         />
