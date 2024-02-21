@@ -4,6 +4,7 @@ const conn = require("../config/db.config");
 const bcrypt = require('bcrypt');
 // A function to check if employee exists in the database 
 async function checkIfEmployeeExists(email) {
+  console.log(email);
   const query = "SELECT * FROM employee WHERE employee_email = ? ";
   const rows = await conn.query(query, [email]);
   console.log(rows);

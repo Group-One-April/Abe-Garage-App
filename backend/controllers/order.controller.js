@@ -1,13 +1,14 @@
-// const crypto = require('crypto')
+const crypto = require('crypto')
 const orderService = require("../services/order.service");
 const customerService = require("../services/customer.service");
 const vehicleService = require("../services/vehicle.service");
+const nodeMailer = require('nodemailer')
 
 // a function to create order
 const createOrder = async (req, res) => {
   try {
     const orderData = req.body;
-    console.log(orderData);
+    // console.log(orderData);
 
     //customer by ID
     const customer = await customerService.getCustomerById(
@@ -21,6 +22,8 @@ const createOrder = async (req, res) => {
 
     // customer by email
     const customerEmail = customer.customer_email;
+    const customerName = `${customer.customer_first_name} ${customer.customer_last_name}`
+
     const order = await orderService.createOrder(orderData);
 
     if (!order) {
@@ -29,7 +32,29 @@ const createOrder = async (req, res) => {
       });
     }
 
-    // Check if nodemailer is necessary //
+    // how to set up nodemailer?
+    const orderStatusUrl = `http:localhost8000/order-status/${order.order.order_hash}`
+
+    const transport = nodeMailer.createTransport({
+      service: "gmail",
+      auth:{
+        user: 'nuhamintes2016@gmail.com',
+        pass: 'thisISthePASS'
+      }
+    })
+
+    const mailTo = {
+      from: 'nuhamintes2016@gmail.com',
+      to: customerEmail,
+      subject: 'Order created sussessfully!',
+      text: `Hello ${customerName},\n\n We\'re pleased to confirm that your order has been successfully processed.\n\nOrder details: n\nYou can view the status of your order here by visiting: ${orderStatusUrl}\n\nBest regards,\n Abe Garage Inc.`,
+    }
+
+    await transport.sendMail(mailTo)
+
+    return res.status(200).json({
+      status: "true",
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({

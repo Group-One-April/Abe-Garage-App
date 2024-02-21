@@ -1,11 +1,12 @@
 import React from "react";
+import Order from "../../components/Admin/Order/Order";
 
 const Orders = () => {
   return (
     <div>
-      <h1>Orders Page</h1>
+      <Order />
     </div>
   );
-}
+};
 
-export default Orders; 
+export default Orders;

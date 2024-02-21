@@ -94,24 +94,12 @@ function App() {
             - Employee: 1 
         */}
 
+        <Route path="/admin/services" element={<ServicesManage />} />
+
         {/*  Add the Orders Route  */}
 
-        <Route
-          path="/admin/orders"
-          element={
-            <PrivateAuthRoute roles={[1, 2, 3]}>
-              <Orders />
-            </PrivateAuthRoute>
-          }
-        />
-        <Route
-          path="/admin/services"
-          element={
-            <PrivateAuthRoute roles={[1, 2, 3]}>
-              <ServicesManage />
-            </PrivateAuthRoute>
-          }
-        />
+        <Route path="/admin/orders" element={<Orders />} />
+
         <Route path="/order-status/:hash" element={<OrderStatusPage />} />
         <Route
           path="/admin/order/get-customer"
