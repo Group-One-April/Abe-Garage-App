@@ -1,10 +1,10 @@
 import React from "react";
-import CustomerList from "../../components/Admin/customer/CustomerList";
+// import CustomerList from "../../components/Admin/customer/CustomerList";
 import AdminMenu from "../../components/Admin/AdminMenu/AdminMenu";
 import LoginForm from "../../components/LoginForm/LoginForm";
 import { useAuth } from "../../../Contexts/AuthContext";
-import ServicesManageForm from "../../components/Admin/Services/ServicesManageForm";
-import AddNewServiceForm from "../../components/Admin/Services/AddNewServiceForm";
+import ServicesManageForm from "../../components/Admin/Sercices/ServicesManageForm";
+import AddNewServiceForm from "../../components/Admin/Sercices/AddNewServiceForm";
 
 const ServicesManage = () => {
   //destructure the auth hook
