@@ -1,3 +1,5 @@
+
+
 const vehicleService = require("../services/vehicle.service");
 
 // Controller function to handle creating a vehicle
@@ -18,11 +20,12 @@ async function createVehicle(req, res, next) {
       const vehicle = await vehicleService.createVehicle(vehicleData);
       if (!vehicle) {
         res.status(400).json({
-          error: "Failed to add vehicle!",
+          error: "Failed to add the vehicle!",
         });
       } else {
         res.status(200).json({
-          status: "true",
+          status: "trueeeeeeeee",
+
         });
       }
     } catch (error) {
@@ -34,12 +37,13 @@ async function createVehicle(req, res, next) {
   }
 }
 
-// Controller function to handle getting vehiclesby customer ID
-async function getVehicleByCustomerId(req, res, next) {
+//write a function to get single vehicle using vehicle id
+async function getVehicleById(req, res, next) {
   try {
-    const customerId = req.params.customer_id;
-   
-    const vehicle = await vehicleService.getVehicleByCustomerId(customerId);
+    const vehicleId = req.params.vehicle_id;
+    // Assuming vehicleService.getVehicleById returns a Promise resolving to a vehicle object
+    const vehicle = await vehicleService.getVehicleById(vehicleId);
+
     if (!vehicle) {
       return res.status(404).json({
         error: "Vehicle not found",
@@ -57,24 +61,36 @@ async function getVehicleByCustomerId(req, res, next) {
 }
 
 
+
+
 // Controller function to handle getting a vehicle by ID
 async function getVehicleById(req, res) {
   try {
     const vehicleId = req.params.id;
     
     const vehicle = await vehicleService.getVehicleById(vehicleId);
+
     if (!vehicle) {
-      res.status(404).json({ error: "Vehicle not found" });
-    } else {
-      res.status(200).json(vehicle);
+      return res.status(404).json({
+        error: "Vehicle not found",
+      });
     }
+    res.status(200).json({
+      vehicle: vehicle,
+    });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.log(err);
+    res.status(400).json({
+      error: "Something went wrong!",
+    });
   }
 }
 
-// controller function fpr updating vehicle
+//write a function to update a vehicle
+
+
+
+
 async function updateVehicle(req, res, next) {
   try {
     const vehicleData = req.body;
@@ -96,11 +112,13 @@ async function updateVehicle(req, res, next) {
     });
   }
 }
-
+//export the controller functions
 module.exports = {
   createVehicle,
-  getVehicleByCustomerId,
+
   getVehicleById,
+  getVehicleByCustomerId,
+
   updateVehicle,
 };
 

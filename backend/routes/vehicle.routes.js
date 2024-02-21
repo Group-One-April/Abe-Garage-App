@@ -1,5 +1,8 @@
+
 const express = require("express");
+//call the router method from express to create the router
 const router = express.Router();
+
 const vehicleController = require('../controllers/vehicle.controller');
 const auth = require("../middlewares/auth.middleware");
 
@@ -19,4 +22,6 @@ router.get(
 // Update a vehicle by ID
 router.put("/api/vehicle", auth, vehicleController.updateVehicle);
 
+
+//export the router
 module.exports = router;

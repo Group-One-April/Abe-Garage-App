@@ -12,6 +12,9 @@ const employeeRouter = require("./employee.routes");
 const loginRouter = require("./login.routes");
 
 //Import the customer router
+
+
+
 const customerRouter = require("./customer.routes");
 
 //Import vehicle routes
@@ -37,7 +40,11 @@ router.use(loginRouter);
 router.use(customerRouter);
 
 // Add the vehicle routes to the main router
+
+
+
 // router.use(vehicleRouter);
+
 
 // Add the service routes to the main router
 router.use(serviceRoutes);
