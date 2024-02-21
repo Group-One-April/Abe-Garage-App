@@ -1,15 +1,50 @@
-//import the query functions from the database
-const conn = require("../config/db.config");
-//create a service function that  check if the vehicle exists in the database, if not exist write a function that create new car to the database using      POST /api/vehicle
+
+// Import the database query function from the database module
+const { query } = require("../config/db.config");
+
+// check if vehicle exists before it's created
+
 async function checkIfVehicleExists(vehicle_serial) {
   const query = "SELECT * FROM customer_vehicle_info WHERE vehicle_serial = ?";
   const rows = await conn.query(query, [vehicle_serial]);
   console.log(rows);
   if (rows.length > 0) {
     return true;
+
   }
   return false;
 }
+
+// Service function to create a vehicle
+async function createVehicle(vehicleData) {
+  const sql = `
+    INSERT INTO customer_vehicle_info 
+    (customer_id, vehicle_year, vehicle_make, vehicle_model, vehicle_type, vehicle_mileage, vehicle_tag, vehicle_serial, vehicle_color) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const params = [
+    vehicleData.customer_id,
+    vehicleData.vehicle_year,
+    vehicleData.vehicle_make,
+    vehicleData.vehicle_model,
+    vehicleData.vehicle_type,
+    vehicleData.vehicle_mileage,
+    vehicleData.vehicle_tag,
+    vehicleData.vehicle_serial,
+    vehicleData.vehicle_color,
+  ];
+
+  try {
+    const result = await query(sql, params);
+    return result.insertId; // Return the ID of the newly created vehicle
+  } catch (error) {
+    throw error;
+
+  }
+  return false;
+}
+
 //create a service function that  check if the vehicle exists in the database, if doesn't exist write a function that create the vehicle in the database
 async function createVehicle(customer_vehicle_info) {
   let createdVehicle = {};
@@ -62,6 +97,9 @@ async function getVehicleByCustomerId(customer_id) {
 }
 
 //create a service function that  check if the vehicle exists in the database, if exist write a function that update the vehicle in the database
+
+
+
 async function updateVehicle(customer_vehicle_info) {
   const query =
     "UPDATE customer_vehicle_info SET vehicle_year = ?, vehicle_make = ?, vehicle_model = ?, vehicle_type = ?, vehicle_mileage = ?, vehicle_tag = ?, vehicle_serial = ?, vehicle_color = ? WHERE vehicle_id = ?";
@@ -84,7 +122,9 @@ async function updateVehicle(customer_vehicle_info) {
 module.exports = {
   checkIfVehicleExists,
   createVehicle,
-  getVehicleById,
+
   getVehicleByCustomerId,
+  getVehicleById,
+
   updateVehicle,
 };

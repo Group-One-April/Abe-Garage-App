@@ -1,6 +1,8 @@
-//import the vehicle service
+
+
 const vehicleService = require("../services/vehicle.service");
-//create the add vehicle controller
+
+// Controller function to handle creating a vehicle
 async function createVehicle(req, res, next) {
   //check if vehicle serial already exists in the database
   const vehicleExists = await vehicleService.checkIfVehicleExists(
@@ -23,6 +25,7 @@ async function createVehicle(req, res, next) {
       } else {
         res.status(200).json({
           status: "trueeeeeeeee",
+
         });
       }
     } catch (error) {
@@ -33,12 +36,14 @@ async function createVehicle(req, res, next) {
     }
   }
 }
+
 //write a function to get single vehicle using vehicle id
 async function getVehicleById(req, res, next) {
   try {
     const vehicleId = req.params.vehicle_id;
     // Assuming vehicleService.getVehicleById returns a Promise resolving to a vehicle object
     const vehicle = await vehicleService.getVehicleById(vehicleId);
+
     if (!vehicle) {
       return res.status(404).json({
         error: "Vehicle not found",
@@ -55,12 +60,16 @@ async function getVehicleById(req, res, next) {
   }
 }
 
-//write a function to get vehicle by customer id
-async function getVehicleByCustomerId(req, res, next) {
+
+
+
+// Controller function to handle getting a vehicle by ID
+async function getVehicleById(req, res) {
   try {
-    const customerId = req.params.customer_id;
-    // Assuming vehicleService.getVehicleByCustomerId returns a Promise resolving to a vehicle object
-    const vehicle = await vehicleService.getVehicleByCustomerId(customerId);
+    const vehicleId = req.params.id;
+    
+    const vehicle = await vehicleService.getVehicleById(vehicleId);
+
     if (!vehicle) {
       return res.status(404).json({
         error: "Vehicle not found",
@@ -76,7 +85,12 @@ async function getVehicleByCustomerId(req, res, next) {
     });
   }
 }
+
 //write a function to update a vehicle
+
+
+
+
 async function updateVehicle(req, res, next) {
   try {
     const vehicleData = req.body;
@@ -101,7 +115,11 @@ async function updateVehicle(req, res, next) {
 //export the controller functions
 module.exports = {
   createVehicle,
+
   getVehicleById,
   getVehicleByCustomerId,
+
   updateVehicle,
 };
+
+
